@@ -7,23 +7,25 @@ import 'package:notes_app/widgets/custom_app_bar.dart';
 import 'package:notes_app/widgets/custom_note_list_view.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({super.key,});
+  HomeView({
+    super.key,
+  });
 
   @override
   State<HomeView> createState() => _HomeViewState();
-
 }
 
 class _HomeViewState extends State<HomeView> {
   @override
+
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NotesCubit(),
-      child: Scaffold(
+    return Builder(builder: (context) {
+      context.read<NotesCubit>().fetchAllNotes(); // Call here instead
+      return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
-              isScrollControlled: true,
+             // isScrollControlled: true,
               context: context,
               builder: (context) {
                 return BlocProvider(
@@ -34,6 +36,7 @@ class _HomeViewState extends State<HomeView> {
                         print("fail ${state.errMessage}");
                       }
                       if (state is AddNoteSuccess) {
+                        BlocProvider.of<NotesCubit>(context).fetchAllNotes();
                         Navigator.pop(context);
                       }
                     },
@@ -42,7 +45,8 @@ class _HomeViewState extends State<HomeView> {
                         absorbing: state is AddNoteLoading ? true : false,
                         child: Padding(
                           padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                              bottom:
+                                  MediaQuery.of(context).viewInsets.bottom),
                           child: AddNoteForm(),
                         ),
                       );
@@ -66,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

@@ -6,10 +6,12 @@ class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
     required this.appBarTitle,
-    required this.icon,
+    required this.icon, this.onTap,
   });
   final String appBarTitle;
   final IconData icon;
+    final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,7 +25,7 @@ class CustomAppBar extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        CustomIconContainer(icon: icon),
+        CustomIconContainer(icon: icon,onTap: onTap,),
       ],
     );
   }
